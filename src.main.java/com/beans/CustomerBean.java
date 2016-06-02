@@ -1,6 +1,6 @@
-package com.controller;
+package com.beans;
 
-public class Customer 
+public class CustomerBean 
 {
 	private String name;
 

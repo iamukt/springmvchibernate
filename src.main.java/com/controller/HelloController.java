@@ -1,10 +1,15 @@
 package com.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.beans.CustomerBean;
+import com.pojos.Customer;
+import com.service.CustomerServiceImpl;
 
 
 
@@ -15,6 +20,9 @@ public class HelloController
 	{
 		System.out.println("Hi");
 	}
+	@Autowired
+	private CustomerServiceImpl csi;
+	
 	@RequestMapping("/")
 	ModelAndView indexPage()
 	{
@@ -27,11 +35,14 @@ public class HelloController
 		return modelView; 
 	}
 	@RequestMapping(value="/add",method=RequestMethod.POST)
-	ModelAndView addCustomerDetails(@ModelAttribute("customer") Customer customer )
+	ModelAndView addCustomerDetails(@ModelAttribute("customer") CustomerBean customer )
 	{
 		ModelAndView modelView = new ModelAndView("details");
-		System.out.println(customer.getName());
-		modelView.addObject("msg","hi");
+		Customer c = new Customer();
+		c.setName(customer.getName());
+		csi.registerCustomer(c);
+		System.out.println("csi"+csi);
+		modelView.addObject("msg","Successfully added into the database");
 		return modelView;
 	}
 }
